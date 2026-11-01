@@ -29,9 +29,9 @@ default noEep = 0.0
 default eepNum = 0.0
 default keyAnswer = ""
 transform dying:
-    #linear 1.0 matrixcolor SaturationMatrix(0.0)
-    linear 1.0 matrixcolor SepiaMatrix()
-    # Alternative to test if a sepia matrix makes the dying effect look better
+    linear 1.0 matrixcolor SaturationMatrix(0.0)
+    #linear 1.0 matrixcolor SepiaMatrix()
+    # Alternative to test if a sepia matrix makes the dying effect look better (It does not)
 #default pronoun2sub = ""
 #default pronoun2obj = ""
 #default pronoun2adj = ""
@@ -304,7 +304,7 @@ label schooltour:
     dmpc "I'm guessing the common people aren't particularly happy about how the nobles get to live it up in this palace off their taxes."
     dmpc "Technically, anyone can attend nowadays, but it's pretty rare to see a commoner here.\nBasically, there's a system where the next class is chosen every year by a random wheel. Five hundred seats."
     dmpc "So in theory, you might think that everyone has an equal shot at attending, right? Well, that's where donations come in."
-    dmpc "See, if someone donates sufficient money, about a hundred thousand levants, or {font=NotoSerifDisplay-VariableFont_wdth,wght.ttf}\u20B7{/font}100,000, to the school, that grants their child or children of choice a seat. From the five hundred, of course."
+    dmpc "See, if someone donates sufficient money, about a million levants, or {font=NotoSerifDisplay-VariableFont_wdth,wght.ttf}\u20B7{/font}1,000,000, to the school, that grants their child or children (if they make multiple donations) of choice a seat. From the five hundred, of course."
     dmpc "And even then, any children that they haven't chosen still have a shot at a seat. So they say it's super exclusive and all, but really, it's a noble children's romping ground. At least, that's what the newspapers that try to rile up the commoners say."
     dmpc "Come to think of it, I think I've heard rumors about some kind of insurrection within Laventhyria. Some kind of 'Revolutionary Pirate Order' that goes around blowing stuff up that belongs to the nobility. I'm sure that would never happen here, though..."
     dmpc "Oh, whoops, I've gotten myself sidetracked again! Hey, if you feel like I'm getting sidetracked, you can tell me and I'll get back on task! Of course, if you want to listen to me yap, that's all fine and dandy too!"
@@ -853,7 +853,7 @@ label alvaBreak1:
                     $ keyAnswer = ""
                     # Resets keyAnswer in case its value is actually the code
                 "I think I know.":
-                    $ keyAnswer = renpy.input("What is the answer?")
+                    $ keyAnswer = renpy.input("What is the answer? Please do not use any periods.")
                     $ keyAnswer = keyAnswer.lower().strip()
                     $ renpy.say(p,keyAnswer)
                     if (keyAnswer == ("they dealt in the eggshell of the shelled gazelle") or keyAnswer == ("they dealt in the shell of the shelled gazelle") or keyAnswer == ("the bombshell found by the belle in a well was planted by a cartel who dealt in the eggshell of the shelled gazelle")):
@@ -912,6 +912,12 @@ label alvaBreak1:
                     jump break_1
         "I don't know...":
             r1 "Then again, I suppose it's not undesirable to just sit together in silence."
+            "The two of you sit together in silence, simply enjoying each other's presence."
+            "Though it might ordinarily be boring, even something as simple as this feels enjoyable."
+            "The hours seem to pass in an instant, and suddenly, the sky has turned a deep blue."
+            r1 "Well, that was surprisingly enjoyable. A good day to you, [pname], and may our next meeting be favorable."
+            $ al.aff += 0.05
+            jump bedroom
         "Never mind.":
             r1 "Seriously? You come over to talk to me, then end it off immediately with 'Never mind.'?"
             $ al.show("pout",genpos,dis,True)
@@ -1043,18 +1049,64 @@ label gwyBreak1:
                     r2 "Seriously? How bad can you get?"
                     r2 "Okay, whatever. If you were actually a government agent, you'd be trying to get close to me, so you're probably not."
                     r2 "Doesn't mean you have to be like that about it, though..."
-                    $ gw.aff -= 0.1
+                    $ gw.aff -= 0.2
                 "No, I wouldn't!":
                     r2 "Putting it on a bit much there, aren't you?"
                     r2 "Well, you seem sincere enough, so I'll be putting my life in your hands."
                     r2 "Please don't get me killed."
                     $ gw.aff += 0.01
             r2 "They feel to me like they're a buncha rich people on a power trip."
-            r2 "Now, I don't know too much about Levanthyrian history a couple centuries ago, but from what I've heard, the country was ruled by a democratic assembly for a bit."
+            r2 "Now, I don't know too much about Levanthyrian history from a couple centuries ago, but from what I've heard, the country was ruled by a democratic assembly for a bit."
             r2 "Then the Levants came in and decided that since they were rich, everything that you can see now is theirs."
             r2 "Councillors dying mysteriously left and right, while the Levants stood through it all."
             r2 "To be honest, they probably had them taken out."
             r2 "I wonder if they're still on good terms with the assassins they had do it."
+            r2 "They've reshaped the old system with the Assembly so much that you can barely tell that it's what it used to be at all."
+            r2 "Like how now, they've got their noble cronies running stuff that used to be run by democratically elected officials and stuff."
+            r2 "They run a tight ship, though. Nobles can't just be lazy or they'll get kicked out, while the rich commoners are clamoring for those noble spots."
+            menu:
+                "Would you like to use the Taskbringer?"
+                "Yes":
+                    $ renpy.say(r2,gw.taskHandler())
+                "No":
+                    r2 "So, in essence, everyone with wealth and power's begging to be noticed by the royals, while everyone else is too poor to do much."
+                    r2 "Despite all their work, though, there's still a revolution. I wonder if it scares them."
+                    r2 "They don't usually care about the lower classes, but maybe when those classes start blowing their stuff up, they'll care a bit more?"
+                    r2 "Hmm, what else?"
+                    r2 "Well, they've been doing a lot of warfaring recently. My guess is that they've probably gotten too many houses rising and not enough falling in recent years."
+                    r2 "That would mean that they're having to give away royal lands to some merchant family that's on the rise, and they probably aren't the biggest fans of that idea, so aggressive expansion could help..."
+                    r2 "How long can they keep it up, though? We've been non-stop at war for the past twenty years, and they've always been victories for the regime, but how long can they keep it up?"
+                    r2 "How many people are dying so that the Levants can crown the next Count of Nowherelandshire? If they make trade harder for the merchants, that goes against the idea of keeping them on your side, but if they don't, they'll always be running out of land."
+                    r2 "Not to mention that the common people are livid about how they have to keep on fighting for rich people to give other rich people land."
+                    r2 "In addition, the difference between the thresholds for commoners to rise and nobles to fall is pretty big, so it's not even that easy for someone to fall."
+                    r2 "It's a good system to keep the rich and powerful under your control while avoiding them becoming lazy, but I don't know if it can truly be considered sustainable."
+                    r2 "At some point, something's got to give, whether it's their capacity for war, their support from wealthy merchants, or their support from the populace."
+                    r2 "When it does, what will they sacrifice?"
+            r2 "They don't really seem to care much for the commoners, though, and that could be their downfall..."
+            r2 "I wonder how the Revolutionary Pirates will do in their revolt. Will they be liberators, or a new set of oppressors?"
+            r2 "It's a revolution of the common people, so I have hope, but you can't really let yourself have too much hope."
+            r2 "Otherwise you'll always be disappointed."
+            r2 "There's also the issue of how they'll handle the nobles..."
+            r2 "Like there's going to be those who say the nobles should just be stripped of their titles and lands, and then there's those who'll want to, well..."
+            r2 "Kill them all."
+            p "K-kill us all?"
+            r2 "Yeahhhh..."
+            r2 "A lot of people've been wronged by the nobility, and that's led to a lot of frustrations about them."
+            r2 "Some people would rather see them all dead."
+            r2 "I'm not on that side, if you're worried about it. Like I said, our regional noble's not terrible like in other regions, and even if they were, I still feel like the systematic murder of an entire group of people is a bit much as punishment."
+            r2 "Even if the nobles have done a lot of bad stuff to the common people, that doesn't mean that we should do terrible things right back to them."
+            r2 "After all, we'd be just as terrible as them."
+            play sound "Bell.ogg"
+            r2 "Well, I suppose that ends this rather grim discussion."
+            r2 "It was fun talking with you, though!"
+            $ gw.aff += 0.1
+            jump bedroom
+        "I'm not sure...":
+            r2 "That's kinda funny, isn't it?"
+            r2 "Well, I suppose it's not altogether unpleasant to just sit together in silence."
+            r2 "It is fun to think sometimes."
+            r2 "Or something like that..."
+            r2 "Wow, I'm not very good at this sitting together in silence thing, am I?"
 label hoBreak1:
     "The dialogue for this section is not yet complete. Please proceed to the bedroom."
     jump bedroom

@@ -1,1 +1,1 @@
-{"action": "heartbeat", "status": "ok", "label": "start", "scene": "['bg_room']", "time": 1792979160.260839}
+{"action": "heartbeat", "status": "ok", "label": "_call__enter_game_menu_0", "scene": "['bg_classroom', 'char_003']", "time": 1793556891.642626}

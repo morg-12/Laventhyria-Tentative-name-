@@ -72,6 +72,7 @@ init python:
         name = " "
         genChooser = 120983736720298382937289
         roofWith = True
+        denied = false
         def __init__(self, idNum, gen, name, filepath, folder, isL2D, isGenChangeable, canBib, bass, genChooser, customFallback = "noFall"):
             self.name = name
             self.idNum = idNum
@@ -385,6 +386,10 @@ label bedroom:
             "Sleep":
                 if (noEep >0):
                     $ noEep -= 0.5
+                $ al.denied = false
+                $ ho.denied = false
+                $ gw.denied = false
+                $ dmp.denied = false
                 jump expression ("class_" + str(day)) 
                 with fade
             "Stay up":
@@ -394,6 +399,10 @@ label bedroom:
                 "You're very tired."
                 "You might make some mistakes tomorrow, but at least you got that last book in, right?"
                 $ noEep += 1
+                $ al.denied = false
+                $ ho.denied = false
+                $ gw.denied = false
+                $ dmp.denied = false
                 jump expression ("class_" + str(day))
                 with fade
     else:
@@ -401,6 +410,10 @@ label bedroom:
             "The day has drawn to an end. What would you like to do now?"
             "Sleep":
                 $ day += 1
+                $ al.denied = false
+                $ ho.denied = false
+                $ gw.denied = false
+                $ dmp.denied = false
                 jump expression ("class_" + str(day))
                 with fade
             "Stay up":
@@ -411,6 +424,10 @@ label bedroom:
                 "You're very tired."
                 "You might make some mistakes tomorrow, but at least you got that last book in, right?"
                 $ noEep += 1
+                $ al.denied = false
+                $ ho.denied = false
+                $ gw.denied = false
+                $ dmp.denied = false
                 jump expression ("class_" + str(day))
                 with fade
 label class_1:
@@ -757,6 +774,11 @@ label break_1:
             jump hallBreak1
 label alvaBreak1:
     $ al.show("idle",genpos,dis,True)
+    if (al.denied):
+        r1 "Did you not say earlier that you had no interest in speaking with me?"
+        r1 "Regardless, I do not believe that I have any interest in speaking to you."
+        r1 "Come back tomorrow, and I may have changed my mind."
+        jump break_1
     if(al.aff < 0.0):
         r1 "Ah, it's you. The one who called me weird. [pname.capitalize()], right?"
     else:
@@ -923,6 +945,7 @@ label alvaBreak1:
             $ al.show("pout",genpos,dis,True)
             r1 "Fine. Whatever. See if I care."
             $ al.aff -= 0.1
+            $ al.denied = true
             jump break_1
 label spy:
     r1 "Ah, so you're a government agent, then? You seem a bit young for the ol' trencher, but I suppose in these times, nobody's too young to serve their nation."
@@ -951,6 +974,11 @@ label spy:
             scene bg_classroom
             jump expression ("break_"+str(day))
 label gwyBreak1:
+    if (gw.denied):
+        r2 "Didn't you say you weren't interested in talking to me?"
+        r2 "Well, I'm not interested in talking to you."
+        r2 "Come back tomorrow and maybe I'll have changed my mind."
+        jump break_1
     $ gw.show("idle",genpos,dis,True)
     if (gw.aff < 0.0):
         r2 "Hello again. Scum of the Earth, was it? Oh, wait, no, your name was [pname]. I had almost forgotten because of your behavior."
@@ -1107,9 +1135,112 @@ label gwyBreak1:
             r2 "It is fun to think sometimes."
             r2 "Or something like that..."
             r2 "Wow, I'm not very good at this sitting together in silence thing, am I?"
+            r2 "I should probably stop talking now."
+            "The two of you sit together in silence."
+            "It's a bit awkward at first, but as time goes by you can feel yourself growing more comfortable with their presence."
+            "The time seems to pass in an instant, and the sky is now a fiery red."
+            r2 "Wow, it's that time already, huh?"
+            r2 "This was surprisingly enjoyable!"
+            r2 "I'll see you tomorrow!"
+            $ gw.aff += 0.05
+            jump bedroom
+        "We could go to the roof!":
+            r2 "Isn't it off limits?"
+            p "It is... Kinda..."
+            p "But from what I hear, the lock's rusty and broken, so much so that you could poke it and it would open."
+            r2 "But wouldn't they be checking it to make sure nobody's up there?"
+            p "My sources tell me no."
+            r2 "What sources? Also, didn't that one noble kid push a commoner off the roof once? ARE YOU TRYING TO KILL ME TOO?????"
+            p "NO, I'M NOT!"
+            r2 "O-okay... Well, I'm still not that sure, but if you want, I guess we can go up there..."
+            menu:
+                "Would you like to go to the rooftop?"
+                "Yes":
+                    scene bg_rooftop
+                    with dis
+                    $ gw.show(idle,lefpos,dis,True)
+                    $ player.show(idle,ripos,dis,True)
+                    r2 "Wow, that really wasn't that hard!"
+                    p "Yeah, it wasn't. Oh, and look at the view!"
+                    "The two of you lay down on the floor and stare up at the sky."
+                    r2 "The sky sure is pretty, huh?"
+                    p "That it is!"
+                    r2 "I wonder how it would look at night..."
+                    p "So do I..."
+                    ""
+                    r2 "Maybe the two of us should come up here at night sometime?"
+                    p "Ah, being a bit daring, are we now?"
+                    $ gw.show("embarassed",lefpos,None,false)
+                    r2 "And what's that supposed to mean, hmm?"
+                    p "Nothing, nothing! It would be nice to come up here at night, though..."
+                    menu:
+                        "It could be nice to come up here with the others sometime...":
+                            r2 ""
+                            r2 "Oh, right, the others! Yeah, it would..."
+                        "It could be nice to come up here sometime, just the two of us...":
+                            $ gw.show("pout",lefpos,None,False)
+                            r2 "And who's the daring one now, hmmmmm?"
+                            $ player.show("embarassed",ripos,none,False)
+                            p "What's that supposed to mean, huh?"
+                            r2 "I don't knoooooooow~"
+                            r2 "Well, I might invite you up here someday..."
+                            r2 "Or maybe I won't..."
+                            r2 "I guess you'll just have to seeeee~"
+                            $ player.show("pout",ripos,none,false)
+                            p "Hey, no fair!"
+                            r2 "Hehehe"
+                    $ gw.aff += 0.2
+                    jump bedroom
+                "No":
+                    p "You do raise some pretty big concerns..."
+                    p "I don't really know that it's safe, I guess... So we probably shouldn't go."
+                    r2 "Okay! I guess if you want to go some other time, I'm not exactly against it..."
+                    r2 "But yeah, we probably shouldn't go until we figure out more about what exactly it entails."
+                    r2 "Bye for now, I guess!"
+                    menu:
+                        "Would you like to keep speaking with Gwynedd or return to the break menu?"
+                        "Gwynedd":
+                            jump gwyBreak1
+                        "Break Menu":
+                            jump break_1
+        "Never mind.":
+            r2 "Really?\nReally?"
+            r2 "You come all the way over to me."
+            r2 "You ask to speak with me during MY BREAK."
+            r2 "And you have the nerve."
+            r2 "THE SHEER NERVE."
+            r2 "To end it off immediately with 'Never mind.'?"
+            $ gw.show("pout",genpos,dis,True)
+            r2 "Fine. Whatever. See if I care."
+            $ gw.aff -= 0.1
+            $ gw.denied = true
+            jump break_1
 label hoBreak1:
-    "The dialogue for this section is not yet complete. Please proceed to the bedroom."
-    jump bedroom
+    if (ho.denied):
+        r3 "I thought you said you didn't want to talk with me?"
+        r3 "I'd probably be too annoying anyway..."
+        r3 "I would appreciate if you could please leave me alone for today..."
+        jump break_1
+    if (ho.aff < 0.0):
+        r3 "Oh, you've come to talk to me..."
+        r3 "Sorry for being annoying earlier..."
+    else:
+        r3 "Oh, h-hello there, [pname]!"
+        r3 "I hope you're doing well!"
+    r3 "Do you want to talk about something?"
+    r3 "I-if you want to go somewhere, that's fine too!"
+    menu:
+        "How do you feel about the revolution?":
+            r3 "There's a revolution?"
+            p "Well, a revolutionary movement. I hear they call themselves the 'Revolutionary Pirates' or something like that."
+            r3 "P-pirates? That sounds a bit scary..."
+            p "I think from what I've heard, they blow stuff up?"
+            r3 "Really?"
+            r3 "Blowing stuff up... I don't think it's too nice..."
+            r3 "But then again, they probably have a reason for doing it, right?"
+            p "I think they specifically target things owned by the monarchy and the nobility and stuff."
+            r3 "Huh. I wonder if they have a specific reason for doing that. Maybe they're trying to send some kind of message to the nobles?"
+            
 label dmpBreak1:
     "The dialogue for this section is not yet complete. Please proceed to the bedroom."
     jump bedroom

@@ -1295,27 +1295,121 @@ label hoBreak1:
                     r3 "W-well, thank you for that..."
                     $ ho.aff += 0.1
                 "You can get quite cute when you're excited about stuff...":
-                    r3 "Excited? Cute? Me? Cute?"
+                    r3 "Excited? Cute? Me? Cute? Cute? Cute?"
+                    $ ho.show("embarassed",genpos,None,false)
+                    "They seem to be struggling to process your statement."
+                    r3 "T-thanks..."
+                    $ ho.aff += 0.2
+            jump bedroom
         "How is it like, being nobility?":
             r3 "Being nobility, huh..."
             r3 "It's really strange, to be honest. I'm dealing with all of these new societal expectations and everyone expects me to act a certain way."
             r3 "Plus I'm not really sure what to think about anything."
             r3 "It's all so sudden..."
-            r3 "Like, before this we were a decently well off common family, and now, through some chance or fortune, we've become nobles."
-            r3 "Like, we were well-off before, but we weren't {font=NotoSerifDisplay-Italic-VariableFont_wdth,wght.ttf} noble {/font} level well-off..."
-            r3 "And now my family's gone from not really caring about our net worth to being obsessed with it and, well, it all feels so strange..."
-            r3 "I guess that's part of the system, though?"
-            r3 "I think there's also a whole bunch of movements against nobles that I just wasn't aware of before, but now I am because I have to be to stay safe."
-            r3 "It feels like the world's suddenly gotten more dangerous for me."
-            r3 "I know there's a lot of people out there who really don't like the nobility, and I'm not sure if they're going to care if I'm old nobility or new nobility."
-            r3 "After all, to them, I'm nobility all the same, and nobility's what's been keeping them down."
+            menu:
+                "Would you like to use the Taskbringer?"
+                "Yes":
+                    $ renpy.say(r3,ho.taskHandler())
+                "No":
+                    r3 "Like, before this we were a decently well off common family, and now, through some chance or fortune, we've become nobles."
+                    r3 "Like, we were well-off before, but we weren't {font=NotoSerifDisplay-Italic-VariableFont_wdth,wght.ttf} noble {/font} level well-off..."
+                    r3 "And now my family's gone from not really caring about our net worth to being obsessed with it and, well, it all feels so strange..."
+                    r3 "I guess that's part of the system, though?"
+                    r3 "I think there's also a whole bunch of movements against nobles that I just wasn't aware of before, but now I am because I have to be to stay safe."
+                    r3 "It feels like the world's suddenly gotten more dangerous for me."
+                    r3 "I know there's a lot of people out there who really don't like the nobility, and I'm not sure if they're going to care if I'm old nobility or new nobility."
+                    r3 "After all, to them, I'm nobility all the same, and nobility's what's been keeping them down."
             r3 "Even if I say I became nobility by chance, that money could've helped them a ton, and now it's not."
             r3 "So there's people who want me dead and people who probably hate everything about my life."
             r3 "So I'd say I'm doing just great right about now..."
-        "I'm not really sure..."
+            play sound "Bell.ogg"
+            r3 "Oh, is it that time already?"
+            r3 "Thanks for listening to me ramble on about my experiences!"
+            $ ho.aff += 0.1
+            jump bedroom
+        "I'm not really sure...":
+            r3 "Funnily enough, that's probably what I'd say..."
+            r3 "Well, I guess there's no problem with sitting together in silence..."
+            "The two of you sit together in silence."
+            "Though it feels a bit awkward at first, you soon become more comfortable in each other's presence, and the hours seem to drift by in seconds."
+            r3 "Maybe it won't be so bad here..."
+            "The sky darkens at a leisurely pace, and by the time you notice it, it has gotten quite late."
+            r3 "Wait, it's that time already?"
+            r3 "Well, that was quite fun..."
+            r3 "Maybe we could do it again sometime?"
+            $ ho.aff += 0.1
+            jump bedroom
+        "We could go upstairs to the rooftop!":
+            r3 "Isn't that off limits?"
+            p "Yes, but it's apparently super easy to get past the lock!"
+            r3 "Wouldn't the teachers be monitoring it, especially after that incident with the noble kid?"
+            p "Surprisingly enough, they don't really! I guess they just built a metal fence and went 'Welp, our work here is done!'"
+            r3 "Weird..."
+            menu:
+                r3 "Well, I'm not entirely sure, but I guess if you want to go, we can go..."
+                "Go":
+                    "Okay, then! Let's go on up and talk about stuff or whatever!"
+                    scene bg_rooftop
+                    with dis
+                    $ ho.show("idle",lefpos,dis,True)
+                    $ player.show("idle",ripos,dis,True)
+                    r3 "Wow, it feels really nice up here!"
+                    p "The view's amazing too..."
+                    "The two of you lay down on your backs and look up at the sky."
+                    r3 "This sky sure is pretty, huh?"
+                    p "That it is..."
+                    r3 "I wonder how it would look at night..."
+                    ""
+                    r3 "Maybe we could come up here sometime at night?"
+                    p "Acting a bit daring, are we?"
+                    $ ho.show("embarassed",lefpos,dis,true)
+                    r3 "W-well, wouldn't it be nice?"
+                    p "That it would..."
+                    menu:
+                        "Maybe we could come up here sometime with everyone else...":
+                            r3 ""
+                            r3 "Oh, right!"
+                            r3 "That would be nice too..."
+                        "It would certainly be fun...":
+                            r3 "Maybe I'll invite you up here sometime!"
+                            r3 "O-or not..."
+                            r3 "It would be pretty embarassing..."
+                            p "Wow, you really fizzled out on that one, huh?"
+                            r3 "Well, it's embarassing, right?"
+                    $ ho.aff += 0.2
+                    jump bedroom
+                "Don't go":
+                    p "I guess it could be pretty risky to go somewhere I've never been before, especially if it could be a risk to my academic career..."
+                    r3 "True..."
+                    r3 "If you end up changing your mind or something, please tell me!"
+                    jump break_1
 label dmpBreak1:
-    "The dialogue for this section is not yet complete. Please proceed to the bedroom."
-    jump bedroom
+    dmp "Oh, hello there, [pname]!"
+    dmp "It's nice to be talking to you again!"
+    if (not aroaceRouteStarted):
+        dmp "Oh, yeah, I remembered that I neglected to mention something to you when I was introducing myself earlier!"
+        dmp "So, I'm aroace. Aegoromantic and Black Stripe Asexual, to be more specific."
+        menu:
+            "Aego-what now?":
+                dmp "Aegoromantic! It means that I like to experience romance vicariously (so like through books and stuff), but I don't experience any romantic attraction."
+                dmp "Black stripe asexual basically means that I feel no sexual attraction at all."
+                dmp "Since the term aroace(meaning aromantic and asexual) is the intersection of two pretty big spectra of people, I like to be a bit more specific on where I lie."
+                dmp "After all, aromantic by itself could mean anything from feeling a small amount of romantic attraction to others or romantic attraction depending on certain conditions, or none at all, and the same could be said for sexual attraction and asexuality."
+                dmp "If you don't want to get that deep into the bushes about who you are, though, that's perfectly fine!"
+                dmp "I just find it fun to learn about these sorts of things, but someone else might find it super overwhelming, and that's completely valid."
+                dmp "I'm also part of this thing called the Order of the Garlic Bread, but that's another thing..."
+            "Black stripe?":
+                dmp "Black stripe asexual! It basically means that I don't feel any sexual attraction at all."
+                dmp "I'm also aegoromantic, which means that I like to experience romance vicariously (so like through books and stuff), but I don't experience any romantic attraction to anyone."
+                dmp "Since the term aroace (meaning aromantic and asexual) describes the intersection of two pretty big spectra of attraction, I like to be more specific about where I lie on it."
+                dmp "After all, being aromantic could mean that you feel a small amount of romantic attraction to certain people, you feel attracted to certain people after getting to know them, or you feel none at all, and the same could be said for sexuality and sexual attraction."
+                dmp "If you don't wanna go that deep into who you are, that's perfectly fine as well."
+                dmp "I find it pretty fun to learn about these kinds of things, but someone else might think it's overwhelming, and that's completely valid."
+                dmp "I'm also part of this thing called the Order of the Garlic Bread, but that's a different thing..."
+        p "Garlic Bread?"
+        dmp "Yeah, it's a thing."
+        dmp "I can tell you more about it a bit later if you want!"
+        $ aroaceRouteStarted = true
 label roofBreak1:
     "The dialogue for this section is not yet complete. Please proceed to the bedroom."
     jump bedroom
